@@ -11,7 +11,7 @@ void uart_init(void) {
     UBRR0L = (uint8_t)ubrr;           // Low byte
 
     // Table 19-4: Asynchronous USART, No Parity, 1 Stop bit
-    // Table 19-7: UCSZ01:0 = 11 → 8-bit data
+    // Table 19-7: UCSZ01:0 = 11, 8-bit data
     UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
 
     // Table 19-10.3: RXEN0 enables the Receiver
@@ -48,8 +48,7 @@ void leds_show(uint8_t v) {
 }
 
 
-// ---------------- EEPROM ----------------
-
+// EEPROM 
 
 void eeprom_write(uint16_t addr, uint8_t data) {
     // Wait until previous write operation completes
@@ -75,10 +74,6 @@ uint8_t eeprom_read(uint16_t addr) {
 }
 
 
-
-// ---------------- MAIN PROGRAM ----------------
-
-
 int main(void) {
     uart_init();    // Initialize UART (9600 baud, 8N1)
     leds_init();    // Configure PB0–PB2 as LED outputs
@@ -90,7 +85,7 @@ int main(void) {
     while (1) {
         c = uart_receive();   // Wait for UART byte
 
-        // ------------------------ RECORD 1–3 INTO EEPROM ------------------------
+        // RECORD 1–3 INTO EEPROM 
         if (c == 1 || c == 2 || c == 3) {
 
             if (ready_for_new_sequence == 1) {
@@ -103,7 +98,7 @@ int main(void) {
         }
 
 
-        // ------------------------ DISPLAY SEQUENCE FROM EEPROM ------------------------
+        // DISPLAY SEQUENCE FROM EEPROM 
         else if (c == 4) {
             for (uint16_t i = 0; i < index; i++) {
                 uint8_t val = eeprom_read(i); // Read EEPROM[i]
@@ -113,14 +108,14 @@ int main(void) {
         }
 
 
-        // ------------------------ RESET SEQUENCE ------------------------
+        //  RESET SEQUENCE 
         else if (c == 0) {
             index = 0;                     // Wipe sequence index
             ready_for_new_sequence = 1;    // Next 1–3 starts a new recording
         }
 
         else {
-            // ignore unknown commands
+            
         }
     }
 }
