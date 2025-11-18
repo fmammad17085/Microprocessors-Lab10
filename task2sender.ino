@@ -15,8 +15,8 @@ void uart_init(void) {
 }
 
 
-uint8_t uart_receive(void) {
-    while (!(UCSR0A & (1 << RXC0)));
+uint8_t uart_receive(void) {  //RXC0 = Receive Complete Flag
+    while (!(UCSR0A & (1 << RXC0))); //Wait until flag becomes 1, then Receive Complete = 1, a full byte has arrived and is stored in UDR0
     return UDR0;
 }
 
@@ -35,8 +35,10 @@ int main(void) {
     
     while (1) {
         c = uart_receive();
+
+        //convert from ASCII
         
-        if (c == '1') {
+        if (c == '1') { 
             send_val = 1;
             uart_transmit(send_val);
         }
