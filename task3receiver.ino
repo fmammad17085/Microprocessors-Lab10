@@ -58,7 +58,7 @@ void eeprom_write(uint16_t addr, uint8_t data) {
     EEAR = addr;     // Set EEPROM address register
     EEDR = data;     // Load data register
 
-    // Required sequence: first set EEMPE, then EEPE (Table 24-5)
+    
     EECR |= (1 << EEMPE);  // Master Write Enable (write allowed for 4 CPU cycles)
     EECR |= (1 << EEPE);   // Start EEPROM write
 }
