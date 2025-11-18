@@ -52,7 +52,7 @@ void leds_show(uint8_t v) {
 
 void eeprom_write(uint16_t addr, uint8_t data) {
     // Wait until previous write operation completes
-    // EEPE = 1 while writing (Table 24-5)
+    // EEPE = 1 while writing 
     while (EECR & (1 << EEPE));
 
     EEAR = addr;     // Set EEPROM address register
